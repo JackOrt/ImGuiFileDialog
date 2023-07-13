@@ -97,8 +97,8 @@ SOFTWARE.
 #define PATH_SEP '/'
 #endif  // _IGFD_UNIX_
 
-#include "imgui.h"
-#include "imgui_internal.h"
+#include "imgui/imgui.h"
+#include "imgui/imgui_internal.h"
 
 #include <cstdlib>
 #include <algorithm>
@@ -2309,8 +2309,9 @@ IGFD_API bool IGFD::FileManager::SelectDirectory(const std::shared_ptr<FileInfos
 
 IGFD_API void IGFD::FileManager::SelectFileName(const FileDialogInternal& vFileDialogInternal, const std::shared_ptr<FileInfos>& vInfos) {
     if (!vInfos.use_count()) return;
+    ImGuiIO& io = ImGui::GetIO();
 
-    if (ImGui::IsKeyDown(ImGuiMod_Ctrl)) {
+    if (io.KeyCtrl) {
         if (puDLGcountSelectionMax == 0)  // infinite selection
         {
             if (prSelectedFileNames.find(vInfos->fileNameExt) == prSelectedFileNames.end())  // not found +> add
@@ -2330,7 +2331,7 @@ IGFD_API void IGFD::FileManager::SelectFileName(const FileDialogInternal& vFileD
                 }
             }
         }
-    } else if (ImGui::IsKeyDown(ImGuiMod_Shift)) {
+    } else if (io.KeyShift) {
         if (puDLGcountSelectionMax != 1) {
             prSelectedFileNames.clear();
             // we will iterate filelist and get the last selection after the start selection
